@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
-
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 const NavBar = () => {
 	const { user, setUser } = useContext(UserContext);
 
@@ -12,6 +12,7 @@ const NavBar = () => {
 
 	return (
 		<nav>
+			<ThemeSwitcher />
 			{user ? (
 				<ul>
 					<li>Welcome, {user.username} </li>
@@ -25,10 +26,16 @@ const NavBar = () => {
 					</li>
 				</ul>
 			) : (
-					<ul>
-						<li><Link to="/">Home</Link></li>
-					<li><Link to="/sign-in">Sign In</Link></li>
-					<li><Link to="/sign-up">Sign Up</Link></li>
+				<ul>
+					<li>
+						<Link to="/">Home</Link>
+					</li>
+					<li>
+						<Link to="/sign-in">Sign In</Link>
+					</li>
+					<li>
+						<Link to="/sign-up">Sign Up</Link>
+					</li>
 				</ul>
 			)}
 		</nav>
