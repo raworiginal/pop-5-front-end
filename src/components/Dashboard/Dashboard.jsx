@@ -1,31 +1,35 @@
-import { useContext } from "react";
-import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import * as userService from "../../services/userService";
-const Dashboard = (props) => {
+import * as topicsService from "../../services/topicsService";
+
+const Dashboard = () => {
 	const { user } = useContext(UserContext);
-	const [users, setUsers] = useState([]);
+	const [topics, settopics] = useState([]);
 	useEffect(() => {
-		const fetchUsers = async () => {
+		const fetchtopics = async () => {
 			try {
-				const fetchedUsers = await userService.index();
-				setUsers(fetchedUsers);
+				const fetchedtopics = await topicsService.index();
+				settopics(fetchedtopics);
 			} catch (err) {
 				console.log(err);
 			}
 		};
-		if (user) fetchUsers();
+		if (user) fetchtopics();
 	}, [user]);
 
 	return (
 		<main>
 			<h1>Welcome, {user.username}</h1>
 			<p>
-				This is the dashboard page where you can see a list of all the users.
+				This is the dashboard page where you can see a list of all the topics.
 			</p>
+			<Link className="btn" to={"/topics/new"}>
+				Add a Topic
+			</Link>
 			<ul>
-				{users.map((user, index) => {
-					return <li key={index}>{user.username}</li>;
+				{topics.map((topic) => {
+					return <li key={topic.id}>{topic.title}</li>;
 				})}
 			</ul>
 		</main>

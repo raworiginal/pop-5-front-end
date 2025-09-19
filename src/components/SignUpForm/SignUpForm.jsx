@@ -38,49 +38,58 @@ const SignUpForm = () => {
 	};
 
 	return (
-		<main>
-			<h1>Sign Up</h1>
+		<fieldset className="fieldset bg-base-200 rounded-box w-xs mx-auto border p-4">
+			<legend className="fieldset-legend text-lg">Sign Up</legend>
 			<p>{message}</p>
 			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="username">Username:</label>
-					<input
-						type="text"
-						id="name"
-						value={username}
-						name="username"
-						onChange={handleChange}
-						required
-					/>
-				</div>
-				<div>
-					<label htmlFor="password">Password:</label>
-					<input
-						type="password"
-						id="password"
-						value={password}
-						name="password"
-						onChange={handleChange}
-						required
-					/>
-				</div>
-				<div>
-					<label htmlFor="confirm">Confirm Password:</label>
-					<input
-						type="password"
-						id="confirm"
-						value={passwordConf}
-						name="passwordConf"
-						onChange={handleChange}
-						required
-					/>
-				</div>
-				<div>
-					<button disabled={isFormInvalid()}>Sign Up</button>
-					<button onClick={() => navigate("/")}>Cancel</button>
-				</div>
+				<label className="label text-lg" htmlFor="username">
+					Username:
+				</label>
+				<input
+					className="input"
+					type="text"
+					id="name"
+					value={username}
+					name="username"
+					onChange={handleChange}
+					required
+				/>
+				<label className="label text-lg" htmlFor="password">
+					Password:
+				</label>
+				<input
+					className="input"
+					type="password"
+					id="password"
+					value={password}
+					name="password"
+					onChange={handleChange}
+					required
+				/>
+				<label className="label text-lg" htmlFor="confirm">
+					Confirm Password:
+				</label>
+				<input
+					className="input"
+					type="password"
+					id="confirm"
+					value={passwordConf}
+					name="passwordConf"
+					onChange={handleChange}
+					required
+				/>
+				<button
+					className="btn btn-ghost btn-secondary mt-4"
+					disabled={isFormInvalid()}>
+					Sign Up
+				</button>
+				<button
+					className="btn btn-ghost btn-warning mt-4"
+					onClick={() => navigate("/")}>
+					Cancel
+				</button>
 			</form>
-		</main>
+		</fieldset>
 	);
 };
 

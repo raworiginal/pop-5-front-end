@@ -18,7 +18,7 @@ const ThemeSwitcher = (props) => {
 			aria-label={nextThemeLabel}
 			onClick={handleSwitchTheme}
 			{...props}>
-			{theme === "dark" ? <FaSun /> : <FaMoon />}
+			{theme === "synthwave" ? <FaSun /> : <FaMoon />}
 		</a>
 	);
 };

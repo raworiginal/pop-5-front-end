@@ -9,15 +9,15 @@ const ThemeProvider = ({ children, ...props }) => {
 	const isSSR = typeof window === "undefined";
 	const htmlTag = !isSSR && document.querySelector("html");
 	const systemPrefersColorScheme = usePrefersColorScheme();
-	const defaultTheme = systemPrefersColorScheme || "light";
+	const defaultTheme = systemPrefersColorScheme || "cyberpunk";
 	const [selectedTheme, setSelectedTheme] = useLocalStorageState(
-		"picoColorScheme",
+		"cyberpunk",
 		null
 	);
-	const [theme, setTheme] = useState("light");
+	const [theme, setTheme] = useState("cyberpunk");
 
 	const switchTheme = () => {
-		setSelectedTheme(theme === "dark" ? "light" : "dark");
+		setSelectedTheme(theme === "synthwave" ? "cyberpunk" : "synthwave");
 	};
 
 	const setDataThemeAttribute = (theme) => {
