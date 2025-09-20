@@ -27,10 +27,31 @@ const Dashboard = () => {
 			<Link className="btn" to={"/topics/new"}>
 				Add a Topic
 			</Link>
-			<ul>
-				{topics.map((topic) => {
-					return <li key={topic.id}>{topic.title}</li>;
-				})}
+			<ul className="list bg-base-200">
+				<li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
+					Most Recent Topics
+				</li>
+				{topics.map((topic, index) => (
+					<li key={topic.id} className="list-row">
+						<div>
+							<img
+								className="size-10 rounded-box"
+								src={`https://i.pravatar.cc/150?img=${index}`}
+							/>
+						</div>
+						<div className="chat-bubble">
+							<Link
+								className="link link-neutral"
+								to={`/topics/${topic.id}`}
+								key={topic.id}>
+								{topic.title}
+							</Link>
+							<div className="text-xs uppercase font-semibold opacity-60">
+								{topic.owner.username}
+							</div>
+						</div>
+					</li>
+				))}
 			</ul>
 		</main>
 	);

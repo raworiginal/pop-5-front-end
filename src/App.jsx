@@ -8,6 +8,7 @@ import SignInForm from "./components/SignInForm/SignInForm";
 import Landing from "./components/Landing/Landing";
 import Dashboard from "./components/Dashboard/Dashboard";
 import TopicForm from "./components/TopicForm/TopicForm";
+import TopicDetails from "./components/TopicDetails/TopicDetails";
 import * as topicService from "./services/topicService.js";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
 					path="/topics/new"
 					element={<TopicForm handleAddTopic={handleAddTopic} />}
 				/>
+				<Route path="/topics/:topicId" element={<TopicDetails />} />
 				<Route path="/sign-up" element={<SignUpForm />} />
 				<Route path="/sign-in" element={<SignInForm />} />
 			</Routes>
