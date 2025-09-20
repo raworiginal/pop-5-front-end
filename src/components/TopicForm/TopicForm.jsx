@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import * as TopicService from "../../services/topicService";
+import * as topicService from "../../services/topicService";
 
-const TopicForm = ({ handleAddTopic }) => {
+const TopicForm = ({ handleAddTopic, handleUpdateTopic }) => {
 	const { topicId } = useParams();
 
 	const [formData, SetFormData] = useState({
@@ -11,7 +11,7 @@ const TopicForm = ({ handleAddTopic }) => {
 		category: "",
 	});
 
-	const categories = ["movies"];
+	const categories = ["movies", "music", "tv"];
 
 	const handleChange = (event) => {
 		SetFormData({ ...formData, [event.target.name]: event.target.value });
@@ -19,22 +19,35 @@ const TopicForm = ({ handleAddTopic }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (topicId) {
-			return;
+			handleUpdateTopic(topicId, formData);
+		} else {
+			handleAddTopic(formData);
 		}
-		handleAddTopic(formData);
 	};
+
+	useEffect(() => {
+		const fetchTopic = async () => {
+			const topicData = await topicService.show(topicId);
+			SetFormData(topicData);
+		};
+		if (topicId) fetchTopic();
+		return () => SetFormData({ title: "", description: "", category: "" });
+	}, [topicId]);
 
 	return (
 		<main className="flex justify-center-safe">
 			<form onSubmit={handleSubmit}>
 				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-					<legend className="fieldset-legend">Create a Topic</legend>
+					<legend className="fieldset-legend">
+						{topicId ? "Edit Topic" : "Create Topic"}
+					</legend>
 
 					<label className="label">Top 5...</label>
 					<textarea
 						required
 						name="title"
 						type="text"
+						value={formData.title}
 						className="textarea"
 						placeholder="children's movies that deeply tramatized you"
 						onChange={handleChange}
@@ -68,7 +81,7 @@ const TopicForm = ({ handleAddTopic }) => {
 					</select>
 
 					<button className="btn btn-secondary" type="submit">
-						SUBMIT
+						{topicId ? "EDIT" : "CREATE"}
 					</button>
 				</fieldset>
 			</form>

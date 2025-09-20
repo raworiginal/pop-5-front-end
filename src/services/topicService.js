@@ -29,7 +29,7 @@ const index = async () => {
 
 const show = async (topicId) => {
 	try {
-		const res = await fetch(BASE_URL + `/${topicId}`, {
+		const res = await fetch(`${BASE_URL}/${topicId}`, {
 			headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 		});
 		return res.json();
@@ -38,4 +38,20 @@ const show = async (topicId) => {
 	}
 };
 
-export { index, create, show };
+const update = async (topicId, topicFormData) => {
+	try {
+		const res = await fetch(`${BASE_URL}/${topicId}`, {
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(topicFormData),
+		});
+		return res.json();
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export { index, create, show, update };

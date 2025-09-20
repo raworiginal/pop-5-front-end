@@ -3,14 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import * as topicService from "../../services/topicService";
 
-const Dashboard = () => {
+const Dashboard = ({ topics, setTopics }) => {
 	const { user } = useContext(UserContext);
-	const [topics, settopics] = useState([]);
 	useEffect(() => {
 		const fetchtopics = async () => {
 			try {
 				const fetchedtopics = await topicService.index();
-				settopics(fetchedtopics);
+				setTopics(fetchedtopics);
 			} catch (err) {
 				console.log(err);
 			}

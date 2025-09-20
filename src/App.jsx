@@ -22,15 +22,36 @@ const App = () => {
 		navigate("/");
 	};
 
+	const handleUpdateTopic = async (topicId, topicFormData) => {
+		const updatedTopic = await topicService.update(topicId, topicFormData);
+		setTopics(
+			topics.map((topic) => (topicId === topic.id ? updatedTopic : topic))
+		);
+		navigate(`/topics/${topicId}`);
+	};
+
 	return (
 		<>
 			<NavBar />
 			{/* Add the Routes component to wrap our individual routes*/}
 			<Routes>
-				<Route path="/" element={user ? <Dashboard /> : <Landing />} />
+				<Route
+					path="/"
+					element={
+						user ? (
+							<Dashboard topics={topics} setTopics={setTopics} />
+						) : (
+							<Landing />
+						)
+					}
+				/>
 				<Route
 					path="/topics/new"
 					element={<TopicForm handleAddTopic={handleAddTopic} />}
+				/>
+				<Route
+					path="/topics/:topicId/edit"
+					element={<TopicForm handleUpdateTopic={handleUpdateTopic} />}
 				/>
 				<Route path="/topics/:topicId" element={<TopicDetails />} />
 				<Route path="/sign-up" element={<SignUpForm />} />

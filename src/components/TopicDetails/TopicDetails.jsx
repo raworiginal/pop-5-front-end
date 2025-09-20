@@ -34,7 +34,11 @@ const TopicDetails = () => {
 						<button className="btn btn-primary">Add Your Top 5</button>
 						{user.id === topic.owner.id && (
 							<>
-								<Link className="btn btn-warning">edit</Link>
+								<Link
+									className="btn btn-warning"
+									to={`/topics/${topic.id}/edit`}>
+									edit
+								</Link>
 							</>
 						)}
 					</div>
