@@ -2,16 +2,23 @@ import { useState, useEffect, useContext } from "react";
 import * as topicService from "../../services/topicService";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
+import ListsIndex from "../ListsIndex/ListsIndex";
+import { IoEllipsisHorizontalCircleSharp } from "react-icons/io5";
 
 const TopicDetails = () => {
 	const { topicId } = useParams();
 	const { user } = useContext(UserContext);
 	const [topic, setTopic] = useState(null);
+	const [lists, setLists] = useState(null);
 
 	useEffect(() => {
 		const fetchTopic = async () => {
-			const topicData = await topicService.show(topicId);
-			setTopic(topicData);
+			try {
+				const topicData = await topicService.show(topicId);
+				setTopic(topicData);
+			} catch (error) {
+				console.error(error);
+			}
 		};
 		fetchTopic();
 	}, [topicId]);
@@ -45,6 +52,7 @@ const TopicDetails = () => {
 				</div>
 			</div>
 			<h1>Here Is the Topic Deatils</h1>
+			<ListsIndex topicId={topicId} lists={lists} setLists={setLists} />
 		</>
 	);
 };

@@ -6,15 +6,15 @@ import * as topicService from "../../services/topicService";
 const Dashboard = ({ topics, setTopics }) => {
 	const { user } = useContext(UserContext);
 	useEffect(() => {
-		const fetchtopics = async () => {
+		const fetchTopics = async () => {
 			try {
-				const fetchedtopics = await topicService.index();
-				setTopics(fetchedtopics);
-			} catch (err) {
-				console.log(err);
+				const fetchedTopics = await topicService.index();
+				setTopics(fetchedTopics);
+			} catch (error) {
+				console.log(error);
 			}
 		};
-		if (user) fetchtopics();
+		if (user) fetchTopics();
 	}, [user]);
 
 	return (
