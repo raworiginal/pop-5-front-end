@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import * as topicsService from "../../services/topicsService";
+import * as topicService from "../../services/topicService";
 
 const Dashboard = () => {
 	const { user } = useContext(UserContext);
@@ -9,7 +9,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		const fetchtopics = async () => {
 			try {
-				const fetchedtopics = await topicsService.index();
+				const fetchedtopics = await topicService.index();
 				settopics(fetchedtopics);
 			} catch (err) {
 				console.log(err);
