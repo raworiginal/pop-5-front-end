@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
 import * as listService from "../../services/listService";
 import { UserContext } from "../../contexts/UserContext";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import ListCard from "../ListCard/ListCard";
 
-const ListsIndex = ({ topicId, lists, setLists }) => {
+const ListsIndex = ({ topic, lists, setLists }) => {
 	const { user } = useContext;
-
+	const { topicId } = useParams();
 	useEffect(() => {
 		const fetchLists = async () => {
 			try {
@@ -27,10 +27,10 @@ const ListsIndex = ({ topicId, lists, setLists }) => {
 
 	return (
 		<>
-			<h1>All The Lists for Topic {topicId} go here</h1>
+			<h1>All The Lists for Topic {topic.title} go here</h1>
 			<ul>
 				{lists.map((list) => (
-					<ListCard key={list.id} list={list} />
+					<ListCard key={list.id} topic={topic} list={list} />
 				))}
 			</ul>
 		</>

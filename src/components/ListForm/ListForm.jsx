@@ -1,29 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as topicService from "../../services/topicService";
 import * as apiService from "../../services/apiService";
+import { useParams } from "react-router";
 
-const ListForm = () => {
+const ListForm = ({ topic, setTopic }) => {
+	const { topicId } = useParams();
+
+	useEffect(() => {
+		const fetchTopic = async () => {
+			try {
+				const topicData = await topicService.show(topicId);
+				setTopic(topicData);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchTopic();
+	}, [topicId]);
+
 	const [searchData, setSearchData] = useState({
 		query: "",
 	});
 	const [formData, setFormData] = useState([]);
 	const [searchResults, setSearchResults] = useState(null);
+	const [selectedResult, setSelectedResult] = useState(null);
+
 	const fetchSearchReults = async () => {
 		try {
-			console.log(searchData);
 			const fetchedResults = await apiService.movieSearch(searchData);
 			setSearchResults(fetchedResults);
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
 	const handleSearch = (event) => {
 		event.preventDefault();
 		fetchSearchReults();
 		document.getElementById("search-results").showModal();
 	};
+
 	const handleChange = (event) => {
 		setSearchData({ ...searchData, [event.target.name]: event.target.value });
-		console.log(searchData);
 	};
 
 	const convertDateString = (dateString) => {
@@ -34,11 +52,29 @@ const ListForm = () => {
 	const closeSearchModal = () => {
 		document.getElementById("search-results").close();
 		setSearchResults(null);
+		setSelectedResult(null);
 	};
 
-	const addToList = () => {
-		console.log();
+	const addResultToForm = (result) => {
+		if (formData.every((item) => item.external_id !== result.id)) {
+			result.external_id = result.id;
+			delete result.id;
+			setFormData([...formData, { ...result, notes: "" }]);
+		}
+		closeSearchModal();
 	};
+
+	const removeResultFromForm = (index) => {
+		formData.splice(index, 1);
+		setFormData([...formData]);
+	};
+
+	if (!topic) {
+		return (
+			<span className="loading loading-ring loading-xl text-warning"></span>
+		);
+	}
+
 	return (
 		<>
 			<search className="flex justify-center-safe">
@@ -70,6 +106,25 @@ const ListForm = () => {
 					</fieldset>
 				</form>
 			</search>
+			<main className="flex justify-center-safe">
+				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-med border p-4">
+					<legend className="fieldset-legend">{`Your Top 5 ${topic.title}`}</legend>
+					{formData.map((item, index) => (
+						<div key={index} className="flex  max-h-25">
+							<p className="text-8xl">{index + 1}</p>
+							<img className="aspect-auto" src={item.poster_path} alt="" />
+							<h2 className="text-4xl">{item.title}</h2>
+							<input className="input" type="text" />
+
+							<button
+								onClick={() => removeResultFromForm(index)}
+								className="btn btn-primary btn-circle">
+								x
+							</button>
+						</div>
+					))}
+				</fieldset>
+			</main>
 
 			<dialog
 				id="search-results"
@@ -93,6 +148,9 @@ const ListForm = () => {
 												<label>
 													<input
 														type="radio"
+														onClick={() => setSelectedResult(result)}
+														key={result.id}
+														value={result.title}
 														name="selection"
 														className="radio"
 													/>
@@ -118,7 +176,11 @@ const ListForm = () => {
 						<button onClick={closeSearchModal} className="btn">
 							Close
 						</button>
-						<button className="btn">Add Selected</button>
+						<button
+							onClick={() => addResultToForm(selectedResult)}
+							className="btn">
+							Add Selected
+						</button>
 					</div>
 				</div>
 			</dialog>

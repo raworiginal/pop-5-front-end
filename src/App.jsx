@@ -14,6 +14,7 @@ import * as topicService from "./services/topicService.js";
 const App = () => {
 	const { user } = useContext(UserContext);
 	const [topics, setTopics] = useState([]);
+	const [topic, setTopic] = useState(null);
 	const navigate = useNavigate();
 
 	const handleAddTopic = async (topicFormData) => {
@@ -33,13 +34,18 @@ const App = () => {
 	return (
 		<>
 			<NavBar />
-			{/* Add the Routes component to wrap our individual routes*/}
+
 			<Routes>
 				<Route
 					path="/"
 					element={
 						user ? (
-							<Dashboard topics={topics} setTopics={setTopics} />
+							<Dashboard
+								topic={topic}
+								setTopic={setTopic}
+								topics={topics}
+								setTopics={setTopics}
+							/>
 						) : (
 							<Landing />
 						)
@@ -53,8 +59,14 @@ const App = () => {
 					path="/topics/:topicId/edit"
 					element={<TopicForm handleUpdateTopic={handleUpdateTopic} />}
 				/>
-				<Route path="/topics/:topicId/lists/new" element={<ListForm />} />
-				<Route path="/topics/:topicId" element={<TopicDetails />} />
+				<Route
+					path="/topics/:topicId/lists/new"
+					element={<ListForm topic={topic} setTopic={setTopic} />}
+				/>
+				<Route
+					path="/topics/:topicId"
+					element={<TopicDetails topic={topic} setTopic={setTopic} />}
+				/>
 
 				<Route path="/sign-up" element={<SignUpForm />} />
 				<Route path="/sign-in" element={<SignInForm />} />

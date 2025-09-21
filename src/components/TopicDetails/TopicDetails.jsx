@@ -4,10 +4,9 @@ import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
 import ListsIndex from "../ListsIndex/ListsIndex";
 
-const TopicDetails = () => {
+const TopicDetails = ({ topic, setTopic }) => {
 	const { topicId } = useParams();
 	const { user } = useContext(UserContext);
-	const [topic, setTopic] = useState(null);
 	const [lists, setLists] = useState(null);
 
 	useEffect(() => {
@@ -55,7 +54,7 @@ const TopicDetails = () => {
 				</div>
 			</div>
 			<h1>Here Is the Topic Deatils</h1>
-			<ListsIndex topicId={topicId} lists={lists} setLists={setLists} />
+			<ListsIndex topic={topic} lists={lists} setLists={setLists} />
 		</>
 	);
 };
