@@ -5,7 +5,7 @@ import * as topicService from "../../services/topicService";
 const TopicForm = ({ handleAddTopic, handleUpdateTopic }) => {
 	const { topicId } = useParams();
 
-	const [formData, SetFormData] = useState({
+	const [formData, setFormData] = useState({
 		title: "",
 		description: "",
 		category: "",
@@ -14,7 +14,7 @@ const TopicForm = ({ handleAddTopic, handleUpdateTopic }) => {
 	const categories = ["movies", "music", "tv"];
 
 	const handleChange = (event) => {
-		SetFormData({ ...formData, [event.target.name]: event.target.value });
+		setFormData({ ...formData, [event.target.name]: event.target.value });
 	};
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -28,10 +28,10 @@ const TopicForm = ({ handleAddTopic, handleUpdateTopic }) => {
 	useEffect(() => {
 		const fetchTopic = async () => {
 			const topicData = await topicService.show(topicId);
-			SetFormData(topicData);
+			setFormData(topicData);
 		};
 		if (topicId) fetchTopic();
-		return () => SetFormData({ title: "", description: "", category: "" });
+		return () => setFormData({ title: "", description: "", category: "" });
 	}, [topicId]);
 
 	return (

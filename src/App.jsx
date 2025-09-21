@@ -8,6 +8,7 @@ import Landing from "./components/Landing/Landing";
 import Dashboard from "./components/Dashboard/Dashboard";
 import TopicForm from "./components/TopicForm/TopicForm";
 import TopicDetails from "./components/TopicDetails/TopicDetails";
+import ListForm from "./components/ListForm/ListForm";
 import * as topicService from "./services/topicService.js";
 
 const App = () => {
@@ -52,7 +53,9 @@ const App = () => {
 					path="/topics/:topicId/edit"
 					element={<TopicForm handleUpdateTopic={handleUpdateTopic} />}
 				/>
+				<Route path="/topics/:topicId/lists/new" element={<ListForm />} />
 				<Route path="/topics/:topicId" element={<TopicDetails />} />
+
 				<Route path="/sign-up" element={<SignUpForm />} />
 				<Route path="/sign-in" element={<SignInForm />} />
 			</Routes>

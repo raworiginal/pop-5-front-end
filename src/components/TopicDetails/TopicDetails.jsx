@@ -3,7 +3,6 @@ import * as topicService from "../../services/topicService";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
 import ListsIndex from "../ListsIndex/ListsIndex";
-import { IoEllipsisHorizontalCircleSharp } from "react-icons/io5";
 
 const TopicDetails = () => {
 	const { topicId } = useParams();
@@ -38,7 +37,11 @@ const TopicDetails = () => {
 							{topic.title}
 						</h1>
 						<p className="py-6 text-secondary-content">{topic.description}</p>
-						<button className="btn btn-primary">Add Your Top 5</button>
+						<Link
+							to={`/topics/${topicId}/lists/new`}
+							className="btn btn-primary">
+							Add Your Top 5
+						</Link>
 						{user.id === topic.owner.id && (
 							<>
 								<Link
