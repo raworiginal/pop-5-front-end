@@ -11,7 +11,7 @@ const TopicForm = ({ handleAddTopic, handleUpdateTopic }) => {
 		category: "",
 	});
 
-	const categories = ["movies", "music", "tv"];
+	const categories = ["movies"];
 
 	const handleChange = (event) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });

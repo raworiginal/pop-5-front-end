@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import * as topicService from "../../services/topicService";
 import * as apiService from "../../services/apiService";
-import { useParams } from "react-router";
+import * as listService from "../../services/listService";
+import { useNavigate, useParams } from "react-router";
 
-const ListForm = ({ topic, setTopic }) => {
+const ListForm = () => {
 	const { topicId } = useParams();
+	const [topic, setTopic] = useState(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchTopic = async () => {
@@ -16,7 +19,17 @@ const ListForm = ({ topic, setTopic }) => {
 			}
 		};
 		fetchTopic();
-	}, [topicId]);
+	}, []);
+
+	const handleAddList = async (newListData) => {
+		try {
+			const newList = { list_items: newListData };
+			await listService.create(topic.id, newList);
+			navigate(`/topics/${topic.id}`);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const [searchData, setSearchData] = useState({
 		query: "",
@@ -56,9 +69,10 @@ const ListForm = ({ topic, setTopic }) => {
 	};
 
 	const addResultToForm = (result) => {
-		if (formData.every((item) => item.external_id !== result.id)) {
-			result.external_id = result.id;
+		if (formData.every((item) => item.ext_id !== result.id)) {
+			result.ext_id = result.id;
 			delete result.id;
+			setSearchData(null);
 			setFormData([...formData, { ...result, notes: "" }]);
 		}
 		closeSearchModal();
@@ -92,12 +106,11 @@ const ListForm = ({ topic, setTopic }) => {
 							placeholder="The Matrix"
 						/>
 
-						<label className="label">Year</label>
+						<label className="label">Year (optional)</label>
 						<input
 							onChange={handleChange}
 							name="year"
 							type="number"
-							maxLength={4}
 							className="input"
 							placeholder="i.e. 1999"
 						/>
@@ -107,7 +120,7 @@ const ListForm = ({ topic, setTopic }) => {
 				</form>
 			</search>
 			<main className="flex justify-center-safe">
-				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-med border p-4">
+				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-med p-4">
 					<legend className="fieldset-legend">{`Your Top 5 ${topic.title}`}</legend>
 					{formData.map((item, index) => (
 						<div key={index} className="flex  max-h-25">
@@ -123,6 +136,9 @@ const ListForm = ({ topic, setTopic }) => {
 							</button>
 						</div>
 					))}
+					<button onClick={() => handleAddList(formData)} className="btn">
+						Create List
+					</button>
 				</fieldset>
 			</main>
 

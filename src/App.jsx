@@ -12,23 +12,32 @@ import ListForm from "./components/ListForm/ListForm";
 import * as topicService from "./services/topicService.js";
 
 const App = () => {
+	//STATES & CONTEXT
 	const { user } = useContext(UserContext);
 	const [topics, setTopics] = useState([]);
-	const [topic, setTopic] = useState(null);
+
 	const navigate = useNavigate();
 
 	const handleAddTopic = async (topicFormData) => {
-		const newTopic = await topicService.create(topicFormData);
-		setTopics([newTopic, ...topics]);
-		navigate("/");
+		try {
+			const newTopic = await topicService.create(topicFormData);
+			setTopics([newTopic, ...topics]);
+			navigate("/");
+		} catch (error) {
+			console.error;
+		}
 	};
 
 	const handleUpdateTopic = async (topicId, topicFormData) => {
-		const updatedTopic = await topicService.update(topicId, topicFormData);
-		setTopics(
-			topics.map((topic) => (topicId === topic.id ? updatedTopic : topic))
-		);
-		navigate(`/topics/${topicId}`);
+		try {
+			const updatedTopic = await topicService.update(topicId, topicFormData);
+			setTopics(
+				topics.map((topic) => (topicId === topic.id ? updatedTopic : topic))
+			);
+			navigate(`/topics/${topicId}`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -40,17 +49,13 @@ const App = () => {
 					path="/"
 					element={
 						user ? (
-							<Dashboard
-								topic={topic}
-								setTopic={setTopic}
-								topics={topics}
-								setTopics={setTopics}
-							/>
+							<Dashboard topics={topics} setTopics={setTopics} />
 						) : (
 							<Landing />
 						)
 					}
 				/>
+
 				<Route
 					path="/topics/new"
 					element={<TopicForm handleAddTopic={handleAddTopic} />}
@@ -59,14 +64,8 @@ const App = () => {
 					path="/topics/:topicId/edit"
 					element={<TopicForm handleUpdateTopic={handleUpdateTopic} />}
 				/>
-				<Route
-					path="/topics/:topicId/lists/new"
-					element={<ListForm topic={topic} setTopic={setTopic} />}
-				/>
-				<Route
-					path="/topics/:topicId"
-					element={<TopicDetails topic={topic} setTopic={setTopic} />}
-				/>
+				<Route path="/topics/:topicId/lists/new" element={<ListForm />} />
+				<Route path="/topics/:topicId" element={<TopicDetails />} />
 
 				<Route path="/sign-up" element={<SignUpForm />} />
 				<Route path="/sign-in" element={<SignInForm />} />
