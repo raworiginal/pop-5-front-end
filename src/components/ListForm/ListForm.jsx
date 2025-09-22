@@ -4,18 +4,20 @@ import * as apiService from "../../services/apiService";
 import * as listService from "../../services/listService";
 import { useNavigate, useParams } from "react-router";
 import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
+import ListCard from "../ListCard/ListCard";
+import ListItem from "../ListCard/ListItem";
+import SearchForm from "./SearchForm";
 
 const ListForm = () => {
 	const { topicId } = useParams();
 	const { listId } = useParams();
 	const [topic, setTopic] = useState(null);
 	const navigate = useNavigate();
-
 	const [searchData, setSearchData] = useState({
 		query: "",
 		year: "",
 	});
-	const [formData, setFormData] = useState([]);
+	const [formData, setFormData] = useState({ items: [] });
 	const [searchResults, setSearchResults] = useState([]);
 	const [selectedResult, setSelectedResult] = useState(null);
 
@@ -36,8 +38,7 @@ const ListForm = () => {
 		const fetchList = async () => {
 			try {
 				const listData = await listService.show(listId);
-				console.log(listData);
-				setFormData(listData.items);
+				setFormData({ items: listData.items });
 			} catch (error) {
 				console.error(error);
 			}
@@ -47,8 +48,8 @@ const ListForm = () => {
 
 	const handleAddList = async (newListData) => {
 		try {
-			const newList = { list_items: newListData };
-			await listService.create(topic.id, newList);
+			// const newList = { items: newListData };
+			await listService.create(topic.id, newListData);
 			navigate(`/topics/${topic.id}`);
 		} catch (error) {
 			console.error(error);
@@ -57,9 +58,7 @@ const ListForm = () => {
 
 	const handleUpdateList = async (updatedListData) => {
 		try {
-			const updatedList = { list_items: updatedListData };
-			console.log(updatedList);
-			await listService.update(listId, updatedList);
+			await listService.update(listId, updatedListData);
 			navigate(`/topics/${topic.id}`);
 		} catch (error) {
 			console.error(error);
@@ -142,75 +141,23 @@ const ListForm = () => {
 
 	return (
 		<>
-			<search className="flex justify-center-safe">
-				<form onSubmit={handleSearch}>
-					<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-						<legend className="fieldset-legend">Movie Search</legend>
-
-						<label className="label">SEARCH</label>
-						<input
-							onChange={handleChange}
-							value={searchData.query}
-							required
-							name="query"
-							type="text"
-							className="input"
-							placeholder="The Matrix"
-						/>
-
-						<label className="label">Year (optional)</label>
-						<input
-							onChange={handleChange}
-							name="year"
-							type="number"
-							className="input"
-							placeholder="i.e. 1999"
-						/>
-
-						<button className="btn btn-neutral mt-4">Search</button>
-					</fieldset>
-				</form>
-			</search>
+			<SearchForm
+				handleChange={handleChange}
+				searchData={searchData}
+				handleSearch={handleSearch}
+			/>
 
 			<main className="flex justify-center-safe">
-				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-med p-4">
-					<legend className="fieldset-legend">{`Your Top 5 ${topic.title}`}</legend>
-					{formData.map((item, index) => (
-						<div key={index} className="flex  max-h-25">
-							<p className="text-8xl">{index + 1}</p>
-							<img className="aspect-auto" src={item.poster_path} alt="" />
-							<h2 className="text-4xl">{item.title}</h2>
-							{/* <input className="input" type="text" /> */}
-
-							<button
-								onClick={() => {
-									moveItemRankUp(index);
-								}}
-								className="btn btn-circle btn-primary text-xl">
-								<FaArrowCircleUp />
-							</button>
-							<button
-								onClick={() => moveItemRankDown(index)}
-								className="btn btn-circle btn-primary text-xl">
-								<FaArrowCircleDown />
-							</button>
-							<button
-								onClick={() => removeResultFromForm(index)}
-								className="btn btn-primary btn-circle">
-								x
-							</button>
-						</div>
-					))}
-					{listId ? (
-						<button onClick={() => handleUpdateList(formData)} className="btn">
-							Edit List
-						</button>
-					) : (
-						<button onClick={() => handleAddList(formData)} className="btn">
-							Create List
-						</button>
-					)}
-				</fieldset>
+				<ListCard list={formData} isForm={true} />
+				{listId ? (
+					<button onClick={() => handleUpdateList(formData)} className="btn">
+						Edit List
+					</button>
+				) : (
+					<button onClick={() => handleAddList(formData)} className="btn">
+						Create List
+					</button>
+				)}
 			</main>
 
 			<dialog

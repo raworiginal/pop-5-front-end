@@ -54,7 +54,6 @@ const TopicDetails = () => {
 					</div>
 				</div>
 			</div>
-			<h1>Here Is the Topic Deatils</h1>
 			<ListsIndex topic={topic} lists={lists} setLists={setLists} />
 		</>
 	);

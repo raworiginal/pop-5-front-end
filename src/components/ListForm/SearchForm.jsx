@@ -1,0 +1,35 @@
+const SearchForm = ({ handleChange, handleSearch, searchData }) => {
+	return (
+		<search className="flex justify-center-safe">
+			<form onSubmit={handleSearch}>
+				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-sm border p-4">
+					<legend className="fieldset-legend">Movie Search</legend>
+
+					<label className="label">SEARCH</label>
+					<input
+						onChange={handleChange}
+						value={searchData.query}
+						required
+						name="query"
+						type="text"
+						className="input"
+						placeholder="The Matrix"
+					/>
+
+					<label className="label">Year (optional)</label>
+					<input
+						onChange={handleChange}
+						name="year"
+						type="number"
+						className="input"
+						placeholder="i.e. 1999"
+					/>
+
+					<button className="btn btn-neutral mt-4">Search</button>
+				</fieldset>
+			</form>
+		</search>
+	);
+};
+
+export default SearchForm;

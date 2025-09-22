@@ -1,11 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import * as listService from "../../services/listService";
-import { UserContext } from "../../contexts/UserContext";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import ListCard from "../ListCard/ListCard";
 
 const ListsIndex = ({ topic, lists, setLists }) => {
-	const { user } = useContext(UserContext);
 	const { topicId } = useParams();
 	useEffect(() => {
 		const fetchLists = async () => {
@@ -27,7 +25,6 @@ const ListsIndex = ({ topic, lists, setLists }) => {
 
 	return (
 		<>
-			<h1>All The Lists for Topic {topic.title} go here</h1>
 			<ul>
 				{lists.map((list) => (
 					<ListCard
