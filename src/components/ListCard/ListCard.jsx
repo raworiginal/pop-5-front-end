@@ -1,11 +1,20 @@
+import { Link } from "react-router";
+
 const ListCard = ({ topic, list }) => {
 	return (
 		<>
-			<div className="card  w- mx-auto">
+			<article className="card card-border w-sm mx-auto">
+				<header className="flex">
+					<h2 className="card-title">{`${list.author.username}'s Top 5 ${topic.title}`}</h2>
+					<section className="card-actions justify-end">
+						<Link to={`lists/${list.id}`} className="btn btn-info">
+							Edit
+						</Link>
+						<button className="btn btn-warning">Delete</button>
+					</section>
+				</header>
+
 				<ul className="list bg-base-100 rounded-box shadow-md">
-					<li className="p-4 pb-2 text-xl opacity-60 tracking-wide">
-						{`${list.author.username}'s Top 5 ${topic.title}`}
-					</li>
 					{list.items.map((item) => (
 						<li className="list-row">
 							<div className="text-4xl tabular-nums">{item.rank}</div>
@@ -25,7 +34,8 @@ const ListCard = ({ topic, list }) => {
 						</li>
 					))}
 				</ul>
-			</div>
+				<section className="card-body"></section>
+			</article>
 		</>
 	);
 };

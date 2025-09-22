@@ -6,8 +6,17 @@ import { useNavigate, useParams } from "react-router";
 
 const ListForm = () => {
 	const { topicId } = useParams();
+	const { listId } = useParams();
 	const [topic, setTopic] = useState(null);
 	const navigate = useNavigate();
+
+	const [searchData, setSearchData] = useState({
+		query: "",
+		year: "",
+	});
+	const [formData, setFormData] = useState([]);
+	const [searchResults, setSearchResults] = useState([]);
+	const [selectedResult, setSelectedResult] = useState(null);
 
 	useEffect(() => {
 		const fetchTopic = async () => {
@@ -21,6 +30,19 @@ const ListForm = () => {
 		fetchTopic();
 	}, []);
 
+	useEffect(() => {
+		const fetchList = async () => {
+			try {
+				const listData = await listService.show(listId);
+				console.log(listData);
+				setFormData(listData.items);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchList();
+	}, []);
+
 	const handleAddList = async (newListData) => {
 		try {
 			const newList = { list_items: newListData };
@@ -31,12 +53,16 @@ const ListForm = () => {
 		}
 	};
 
-	const [searchData, setSearchData] = useState({
-		query: "",
-	});
-	const [formData, setFormData] = useState([]);
-	const [searchResults, setSearchResults] = useState(null);
-	const [selectedResult, setSelectedResult] = useState(null);
+	const handleUpdateList = async (updatedListData) => {
+		try {
+			const updatedList = { list_items: updatedListData };
+			console.log(updatedList);
+			await listService.update(listId, updatedList);
+			navigate(`/topics/${topic.id}`);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const fetchSearchReults = async () => {
 		try {
@@ -64,15 +90,15 @@ const ListForm = () => {
 
 	const closeSearchModal = () => {
 		document.getElementById("search-results").close();
-		setSearchResults(null);
-		setSelectedResult(null);
+		setSearchResults([]);
+		setSelectedResult([]);
 	};
 
 	const addResultToForm = (result) => {
 		if (formData.every((item) => item.ext_id !== result.id)) {
 			result.ext_id = result.id;
 			delete result.id;
-			setSearchData(null);
+			setSearchData({ query: "", year: "" });
 			setFormData([...formData, { ...result, notes: "" }]);
 		}
 		closeSearchModal();
@@ -99,6 +125,7 @@ const ListForm = () => {
 						<label className="label">SEARCH</label>
 						<input
 							onChange={handleChange}
+							value={searchData.query}
 							required
 							name="query"
 							type="text"
@@ -136,9 +163,15 @@ const ListForm = () => {
 							</button>
 						</div>
 					))}
-					<button onClick={() => handleAddList(formData)} className="btn">
-						Create List
-					</button>
+					{listId ? (
+						<button onClick={() => handleUpdateList(formData)} className="btn">
+							Edit List
+						</button>
+					) : (
+						<button onClick={() => handleAddList(formData)} className="btn">
+							Create List
+						</button>
+					)}
 				</fieldset>
 			</main>
 

@@ -64,9 +64,9 @@ const App = () => {
 					path="/topics/:topicId/edit"
 					element={<TopicForm handleUpdateTopic={handleUpdateTopic} />}
 				/>
-				<Route path="/topics/:topicId/lists/new" element={<ListForm />} />
 				<Route path="/topics/:topicId" element={<TopicDetails />} />
-
+				<Route path="/topics/:topicId/lists/new" element={<ListForm />} />
+				<Route path="/topics/:topicId/lists/:listId" element={<ListForm />} />
 				<Route path="/sign-up" element={<SignUpForm />} />
 				<Route path="/sign-in" element={<SignInForm />} />
 			</Routes>

@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router";
 import ListCard from "../ListCard/ListCard";
 
 const ListsIndex = ({ topic, lists, setLists }) => {
-	const { user } = useContext;
+	const { user } = useContext(UserContext);
 	const { topicId } = useParams();
 	useEffect(() => {
 		const fetchLists = async () => {
@@ -30,7 +30,7 @@ const ListsIndex = ({ topic, lists, setLists }) => {
 			<h1>All The Lists for Topic {topic.title} go here</h1>
 			<ul>
 				{lists.map((list) => (
-					<ListCard key={list.id} topic={topic} list={list} />
+					<ListCard user={user} key={list.id} topic={topic} list={list} />
 				))}
 			</ul>
 		</>
