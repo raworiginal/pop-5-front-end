@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import * as topicService from "../../services/topicService";
-import * as listService from "../../services/listService";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
 import ListsIndex from "../ListsIndex/ListsIndex";
@@ -10,15 +9,6 @@ const TopicDetails = () => {
 	const [topic, setTopic] = useState(null);
 	const { user } = useContext(UserContext);
 	const [lists, setLists] = useState(null);
-
-	const handleAddList = async (newListData) => {
-		try {
-			const newList = await listService.create(topicId, newListData);
-			setLists([newList, ...lists]);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	useEffect(() => {
 		const fetchTopic = async () => {

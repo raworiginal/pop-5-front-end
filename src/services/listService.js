@@ -54,4 +54,18 @@ const update = async (listId, updatedListData) => {
 	}
 };
 
-export { index, create, show, update };
+const deleteList = async (listId) => {
+	try {
+		const res = await fetch(`${BASE_URL}/lists/${listId}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		});
+		return res.json();
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export { index, create, show, update, deleteList };

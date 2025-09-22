@@ -30,7 +30,13 @@ const ListsIndex = ({ topic, lists, setLists }) => {
 			<h1>All The Lists for Topic {topic.title} go here</h1>
 			<ul>
 				{lists.map((list) => (
-					<ListCard user={user} key={list.id} topic={topic} list={list} />
+					<ListCard
+						lists={lists}
+						setLists={setLists}
+						key={list.id}
+						topic={topic}
+						list={list}
+					/>
 				))}
 			</ul>
 		</>
