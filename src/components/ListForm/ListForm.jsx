@@ -3,6 +3,7 @@ import * as topicService from "../../services/topicService";
 import * as apiService from "../../services/apiService";
 import * as listService from "../../services/listService";
 import { useNavigate, useParams } from "react-router";
+import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 
 const ListForm = () => {
 	const { topicId } = useParams();
@@ -21,6 +22,7 @@ const ListForm = () => {
 	useEffect(() => {
 		const fetchTopic = async () => {
 			try {
+				console.log("...fetching topic");
 				const topicData = await topicService.show(topicId);
 				setTopic(topicData);
 			} catch (error) {
@@ -40,7 +42,7 @@ const ListForm = () => {
 				console.error(error);
 			}
 		};
-		fetchList();
+		if (listId) fetchList();
 	}, []);
 
 	const handleAddList = async (newListData) => {
@@ -109,6 +111,29 @@ const ListForm = () => {
 		setFormData([...formData]);
 	};
 
+	const moveItemRankUp = (index) => {
+		if (index > 0 && index < 5) {
+			const updatedList = [...formData];
+			[updatedList[index - 1], updatedList[index]] = [
+				updatedList[index],
+				updatedList[index - 1],
+			];
+
+			setFormData(updatedList);
+		}
+	};
+	const moveItemRankDown = (index) => {
+		if (index >= 0 && index < 4) {
+			const updatedList = [...formData];
+			[updatedList[index + 1], updatedList[index]] = [
+				updatedList[index],
+				updatedList[index + 1],
+			];
+
+			setFormData(updatedList);
+		}
+	};
+
 	if (!topic) {
 		return (
 			<span className="loading loading-ring loading-xl text-warning"></span>
@@ -146,6 +171,7 @@ const ListForm = () => {
 					</fieldset>
 				</form>
 			</search>
+
 			<main className="flex justify-center-safe">
 				<fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-med p-4">
 					<legend className="fieldset-legend">{`Your Top 5 ${topic.title}`}</legend>
@@ -154,8 +180,20 @@ const ListForm = () => {
 							<p className="text-8xl">{index + 1}</p>
 							<img className="aspect-auto" src={item.poster_path} alt="" />
 							<h2 className="text-4xl">{item.title}</h2>
-							<input className="input" type="text" />
+							{/* <input className="input" type="text" /> */}
 
+							<button
+								onClick={() => {
+									moveItemRankUp(index);
+								}}
+								className="btn btn-circle btn-primary text-xl">
+								<FaArrowCircleUp />
+							</button>
+							<button
+								onClick={() => moveItemRankDown(index)}
+								className="btn btn-circle btn-primary text-xl">
+								<FaArrowCircleDown />
+							</button>
 							<button
 								onClick={() => removeResultFromForm(index)}
 								className="btn btn-primary btn-circle">
