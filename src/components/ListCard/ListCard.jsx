@@ -95,6 +95,7 @@ const ListCard = ({
 									moveItemRankUp={moveItemRankUp}
 									removeItemFromList={removeItemFromList}
 									isForm={isForm}
+									listLength={list.items.length}
 								/>
 							))}
 						</ul>

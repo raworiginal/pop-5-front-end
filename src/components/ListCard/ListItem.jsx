@@ -6,6 +6,7 @@ const ListItem = ({
 	moveItemRankUp,
 	isForm,
 	removeItemFromList,
+	listLength,
 }) => {
 	return (
 		<li className="list-row border-b-2 p-1">
@@ -31,7 +32,7 @@ const ListItem = ({
 							<FaArrowUp />
 						</button>
 					)}
-					{index !== 4 && index > 0 && (
+					{index !== listLength - 1 && (
 						<button
 							onClick={() => moveItemRankDown(index)}
 							className="btn btn-xs  btn-success">

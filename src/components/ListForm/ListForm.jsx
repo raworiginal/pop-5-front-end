@@ -197,9 +197,7 @@ const ListForm = () => {
 				/>
 			</main>
 
-			<dialog
-				id="search-modal"
-				className="modal modal-bottom mx-auto sm:modal-middle">
+			<dialog id="search-modal" className="modal flex justify-center">
 				{searchResults ? (
 					<SearchResults
 						searchResults={searchResults}
