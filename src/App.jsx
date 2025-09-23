@@ -22,7 +22,7 @@ const App = () => {
 		try {
 			const newTopic = await topicService.create(topicFormData);
 			setTopics([newTopic, ...topics]);
-			navigate("/");
+			navigate(`/topics/${newTopic.id}`);
 		} catch (error) {
 			console.error;
 		}
