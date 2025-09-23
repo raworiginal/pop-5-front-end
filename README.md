@@ -5,22 +5,16 @@
 ## Getting Started
 
 - [POP 5](https://pop5.netlify.app/)
-- [back-end repo](https://github.com/raworiginal/bleepr-express-back-end)
-- [planning materials](https://trello.com/b/MaR3HXMP/bleepr)
+- [back-end repo](https://github.com/raworiginal/pop-5-back-end)
+- [planning materials](https://trello.com/b/futhNj0K/pop-5)
 
 ## About The App
 
-Bleepr is a retro social media app, an homage to early twitter and myspace. Bleeprs can create bleeps, read other Bleeprs bleeps, edit their own bleeps, and delete their own bleeps. Additionally Bleeprs, can comment on bleeps and edit and delete those comments.
-
-Bleeprs can also filter bleeps based on Hashtags.
-
-Bleeprs also have a profile page with an about me sections, and bleeprs can edit that about me section.
-
-We built this project because we miss the sense of discovery and engagement that came with social media before algorithmically generated feeds.
+Pop 5 is a social ranking app, where users create topics and add their Top 5 list to the topics. You can also browse most recent topics and add your top 5 to those lists. You can create, read, update, and delete lists. You can also update your topics. When you make your top 5, you can search an api for the metadata for the movies in your top 5 and rearrange the order of your list.
 
 ## Attribution
 
-- Profile pics from [Robohash](https://pravatar.cc/)
+- Profile pics from [Robohash](https://robohash.org/)
 
 ## Technologies
 
@@ -33,8 +27,6 @@ We built this project because we miss the sense of discovery and engagement that
 
 ## Next Steps (WIP)
 
-While working on this project with pushed against the limits of MongoDB in a social media project. Specifically when it came to adding Friends to our Bleepr pages. So in our next iteration of Bleepr, we will migrate from MongoDb to a relational database like PostgresSQL.
-
-We would like to add functionality like add and remove friends, and having a Top 8 list.
-
-We would like to allow users to upload profile pictures.
+- Next I want to add more categories (TV, Anime, Music, etc)
+- I want to aggregate Top 5s in a topic to create an overall top 5
+- I want create user profiles where you can see all of the top 5 lists created by a user or yourself
