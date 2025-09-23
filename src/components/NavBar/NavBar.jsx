@@ -11,7 +11,7 @@ const NavBar = () => {
 	};
 
 	return (
-		<nav className="navbar mx-auto bg-base-100 shadow-sm">
+		<nav className="navbar mx-auto w-5xl bg-base-100 shadow-sm">
 			{/* LEFT / START */}
 			<div className="navbar-start">
 				{/* Mobile dropdown */}
