@@ -1,7 +1,7 @@
 // src/components/SignInForm/SignInForm.jsx
 
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { signIn } from "../../services/authService";
 
@@ -27,7 +27,7 @@ const SignInForm = () => {
 			const signedInUser = await signIn(formData);
 
 			setUser(signedInUser);
-			navigate("/");
+			navigate("/topics");
 		} catch (err) {
 			setMessage(err.message);
 		}

@@ -1,17 +1,18 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 const NavBar = () => {
 	const { user, setUser } = useContext(UserContext);
-
+	const navigate = useNavigate();
 	const handleSignOut = () => {
 		localStorage.removeItem("token");
 		setUser(null);
+		navigate("/");
 	};
 
 	return (
-		<nav className="navbar mx-auto w-5xl bg-base-100 shadow-sm">
+		<nav className="navbar mx-auto w-full bg-base-100 shadow-sm">
 			{/* LEFT / START */}
 			<div className="navbar-start">
 				{/* Mobile dropdown */}

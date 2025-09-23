@@ -1,7 +1,7 @@
 // SignUpForm.jsx
 
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { signUp } from "../../services/authService";
 import { UserContext } from "../../contexts/UserContext";
 
@@ -27,7 +27,7 @@ const SignUpForm = () => {
 		try {
 			const newUser = await signUp(formData);
 			setUser(newUser);
-			navigate("/");
+			navigate("/topics");
 		} catch (err) {
 			setMessage(err.message);
 		}

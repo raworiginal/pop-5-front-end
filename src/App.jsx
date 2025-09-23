@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
 import NavBar from "./components/NavBar/NavBar";
 import SignUpForm from "./components/SignUpForm/SignUpForm";
@@ -55,7 +55,10 @@ const App = () => {
 						)
 					}
 				/>
-
+				<Route
+					path="/topics"
+					element={<Dashboard topic={topics} setTopics={setTopics} />}
+				/>
 				<Route
 					path="/topics/new"
 					element={<TopicForm handleAddTopic={handleAddTopic} />}

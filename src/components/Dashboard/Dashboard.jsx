@@ -1,7 +1,8 @@
-import { Link, Routes, Route, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import * as topicService from "../../services/topicService";
+import Loading from "../Placeholders/Loading";
 
 const Dashboard = () => {
 	const { user } = useContext(UserContext);
@@ -16,9 +17,16 @@ const Dashboard = () => {
 				console.log(error);
 			}
 		};
-		if (user) fetchTopics();
+		fetchTopics();
 	}, [user]);
-
+	if (!topics)
+		return (
+			<>
+				<div>
+					<Loading />
+				</div>
+			</>
+		);
 	return (
 		<>
 			<main>
