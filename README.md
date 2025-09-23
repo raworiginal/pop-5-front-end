@@ -20,7 +20,10 @@ We built this project because we miss the sense of discovery and engagement that
 
 ## Attribution
 
-- Profile pics from [Robohash](https://pravatar.cc/)
+- Profile pics from [Robohash](https://robohash.org/)
+- UI components from DaisyUI
+- Movie API is TMDB
+
 
 ## Technologies
 
