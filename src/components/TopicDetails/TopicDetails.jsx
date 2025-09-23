@@ -46,7 +46,7 @@ const TopicDetails = () => {
 		}
 	};
 
-	if (!topic) {
+	if (!topic || !Array.isArray(lists)) {
 		return (
 			<div className="flex justify-center">
 				<Loading />
@@ -65,21 +65,20 @@ const TopicDetails = () => {
 						<p className="py-6 w-sm text-left text-secondary-content">
 							{topic.description}
 						</p>
-						{lists.some((item) => item.author.id === user.id) || (
+
+						{!lists?.some((item) => item?.author?.id === user?.id) && (
 							<Link
 								to={`/topics/${topicId}/lists/new`}
 								className="btn btn-primary">
 								Add Your Top 5
 							</Link>
 						)}
-						{user.id === topic.owner.id && (
-							<>
-								<Link
-									className="btn btn-warning"
-									to={`/topics/${topic.id}/edit`}>
-									edit topic
-								</Link>
-							</>
+
+						{/* Only show edit if user owns topic */}
+						{user?.id === topic?.owner?.id && (
+							<Link className="btn btn-warning" to={`/topics/${topic.id}/edit`}>
+								edit topic
+							</Link>
 						)}
 					</div>
 				</div>
