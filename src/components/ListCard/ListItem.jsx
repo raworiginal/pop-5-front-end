@@ -31,7 +31,7 @@ const ListItem = ({
 							<FaArrowUp />
 						</button>
 					)}
-					{index !== 4 && (
+					{index !== 4 && index > 0 && (
 						<button
 							onClick={() => moveItemRankDown(index)}
 							className="btn btn-xs  btn-success">
