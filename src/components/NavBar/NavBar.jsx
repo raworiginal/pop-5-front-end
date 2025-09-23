@@ -69,8 +69,10 @@ const NavBar = () => {
 				</div>
 
 				{/* Brand */}
-				<Link to="/" className="btn btn-ghost text-xl rampart">
-					Pop 5!
+				<Link
+					to="/"
+					className="btn btn-info shadow tracking-tighter  text-3xl rampart">
+					POP 5!
 				</Link>
 			</div>
 

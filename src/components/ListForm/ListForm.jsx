@@ -3,10 +3,9 @@ import * as topicService from "../../services/topicService";
 import * as apiService from "../../services/apiService";
 import * as listService from "../../services/listService";
 import { useNavigate, useParams } from "react-router";
-import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
 import ListCard from "../ListCard/ListCard";
-import ListItem from "../ListCard/ListItem";
 import SearchForm from "./SearchForm";
+import SearchResults from "./SearchResults";
 
 const ListForm = () => {
 	const { topicId } = useParams();
@@ -17,8 +16,9 @@ const ListForm = () => {
 		query: "",
 		year: "",
 	});
+
 	const [formData, setFormData] = useState({ items: [] });
-	const [searchResults, setSearchResults] = useState([]);
+	const [searchResults, setSearchResults] = useState(null);
 	const [selectedResult, setSelectedResult] = useState(null);
 
 	useEffect(() => {
@@ -45,7 +45,9 @@ const ListForm = () => {
 		};
 		if (listId) fetchList();
 	}, []);
-
+	const handleChangeSelection = (result) => {
+		setSelectedResult(result);
+	};
 	const handleAddList = async (newListData) => {
 		try {
 			// const newList = { items: newListData };
@@ -77,59 +79,67 @@ const ListForm = () => {
 	const handleSearch = (event) => {
 		event.preventDefault();
 		fetchSearchReults();
-		document.getElementById("search-results").showModal();
 	};
-
+	const openSearchModel = () => {
+		document.getElementById("search-modal").showModal();
+	};
 	const handleChange = (event) => {
 		setSearchData({ ...searchData, [event.target.name]: event.target.value });
 	};
 
-	const convertDateString = (dateString) => {
-		const convertedDateString = new Date(dateString);
-		return convertedDateString.toLocaleDateString("en-US");
+	const closeSearchModal = () => {
+		document.getElementById("search-modal").close();
+		setSearchResults(null);
+		setSelectedResult(null);
 	};
 
-	const closeSearchModal = () => {
-		document.getElementById("search-results").close();
-		setSearchResults([]);
-		setSelectedResult([]);
+	const clearSearchResuls = () => {
+		setSearchResults(null);
 	};
 
 	const addResultToForm = (result) => {
-		if (formData.every((item) => item.ext_id !== result.id)) {
-			result.ext_id = result.id;
-			delete result.id;
-			setSearchData({ query: "", year: "" });
-			setFormData([...formData, { ...result, notes: "" }]);
+		const currentList = [...formData.items];
+		console.log(currentList);
+		// I finally found a use for type coercision
+		if (currentList.some((item) => item.ext_id == result.id)) {
+			console.log(result);
+			return console.log(`${result.id} is already in your list`);
 		}
+		result.ext_id = result.id;
+		result.notes = "";
+		delete result.id;
+		const updatedItems = [...formData.items, result];
+		setSearchData({ query: "", year: "" });
+		setFormData({ items: updatedItems });
 		closeSearchModal();
 	};
 
-	const removeResultFromForm = (index) => {
-		formData.splice(index, 1);
-		setFormData([...formData]);
+	const removeItemFromList = (index) => {
+		const items = [...formData.items];
+		const updatedItems = items.filter((_, idx) => idx !== index);
+		setFormData({ items: updatedItems });
 	};
 
 	const moveItemRankUp = (index) => {
 		if (index > 0 && index < 5) {
-			const updatedList = [...formData];
+			const updatedList = [...formData.items];
 			[updatedList[index - 1], updatedList[index]] = [
 				updatedList[index],
 				updatedList[index - 1],
 			];
 
-			setFormData(updatedList);
+			setFormData({ items: updatedList });
 		}
 	};
 	const moveItemRankDown = (index) => {
 		if (index >= 0 && index < 4) {
-			const updatedList = [...formData];
+			const updatedList = [...formData.items];
 			[updatedList[index + 1], updatedList[index]] = [
 				updatedList[index],
 				updatedList[index + 1],
 			];
 
-			setFormData(updatedList);
+			setFormData({ items: updatedList });
 		}
 	};
 
@@ -141,82 +151,69 @@ const ListForm = () => {
 
 	return (
 		<>
-			<SearchForm
-				handleChange={handleChange}
-				searchData={searchData}
-				handleSearch={handleSearch}
-			/>
-
+			<section className="fieldset bg-secondary rounded-box w-sm mx-auto border p-4">
+				<h2 className="text-xl text-secondary-content">{topic.title}</h2>
+				<h2 className="mx-auto text-secondary-content text-xl">
+					{formData.items.length}/5
+				</h2>
+				<progress
+					className="progress progress-neutral"
+					value={formData.items.length}
+					max={5}></progress>
+				<div className="flex items-center justify-center">
+					{formData.items.length < 5 ? (
+						<button
+							className="btn btn-warning btn-wide"
+							onClick={openSearchModel}>
+							Add An Item
+						</button>
+					) : (
+						<div>
+							{listId ? (
+								<button
+									onClick={() => handleUpdateList(formData)}
+									className="btn btn-success btn-sm">
+									Submit Edited List
+								</button>
+							) : (
+								<button
+									onClick={() => handleAddList(formData)}
+									className="btn btn-success btn-sm">
+									Submit New List
+								</button>
+							)}
+						</div>
+					)}
+				</div>
+			</section>
 			<main className="flex justify-center-safe">
-				<ListCard list={formData} isForm={true} />
-				{listId ? (
-					<button onClick={() => handleUpdateList(formData)} className="btn">
-						Edit List
-					</button>
-				) : (
-					<button onClick={() => handleAddList(formData)} className="btn">
-						Create List
-					</button>
-				)}
+				<ListCard
+					list={formData}
+					isForm={true}
+					moveItemRankDown={moveItemRankDown}
+					moveItemRankUp={moveItemRankUp}
+					removeItemFromList={removeItemFromList}
+				/>
 			</main>
 
 			<dialog
-				id="search-results"
-				className="modal modal-bottom sm:modal-middle">
-				<div className="modal-box min-w-340px">
-					<div className="overflow-x-auto">
-						<table className="table">
-							<thead>
-								<tr>
-									<th></th>
-									<th>poster</th>
-									<th>title</th>
-									<th>release date</th>
-								</tr>
-							</thead>
-							<tbody>
-								{searchResults &&
-									searchResults.map((result) => (
-										<tr>
-											<th>
-												<label>
-													<input
-														type="radio"
-														onClick={() => setSelectedResult(result)}
-														key={result.id}
-														value={result.title}
-														name="selection"
-														className="radio"
-													/>
-												</label>
-											</th>
-											<td>
-												<div className="avatar w-20">
-													<img
-														src={result.poster_path}
-														alt={`movie poster for ${result.title}`}
-													/>
-												</div>
-											</td>
-											<td>{result.title}</td>
-											<td>{convertDateString(result.release_date)}</td>
-										</tr>
-									))}
-							</tbody>
-						</table>
-					</div>
-
-					<div className="modal-action">
-						<button onClick={closeSearchModal} className="btn">
-							Close
-						</button>
-						<button
-							onClick={() => addResultToForm(selectedResult)}
-							className="btn">
-							Add Selected
-						</button>
-					</div>
-				</div>
+				id="search-modal"
+				className="modal modal-bottom mx-auto sm:modal-middle">
+				{searchResults ? (
+					<SearchResults
+						searchResults={searchResults}
+						selectedResult={selectedResult}
+						handleChangeSelection={handleChangeSelection}
+						addResultToForm={addResultToForm}
+						closeSearchModal={closeSearchModal}
+					/>
+				) : (
+					<SearchForm
+						handleChange={handleChange}
+						searchData={searchData}
+						handleSearch={handleSearch}
+					/>
+				)}
 			</dialog>
 		</>
 	);

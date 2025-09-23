@@ -3,6 +3,7 @@ import * as topicService from "../../services/topicService";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
 import ListsIndex from "../ListsIndex/ListsIndex";
+import * as listService from "../../services/listService";
 
 const TopicDetails = () => {
 	const { topicId } = useParams();
@@ -22,7 +23,29 @@ const TopicDetails = () => {
 		fetchTopic();
 	}, [topicId]);
 
-	if (!topic) {
+	useEffect(() => {
+		const fetchLists = async () => {
+			try {
+				const fetchedLists = await listService.index(topicId);
+				setLists(fetchedLists);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchLists();
+	}, [topicId]);
+
+	const handleDeleteList = async (list) => {
+		try {
+			const updatedLists = lists.filter((item) => item.id !== list.id);
+			setLists(updatedLists);
+			await listService.deleteList(list.id);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	if (!topic || !lists) {
 		return (
 			<span className="loading loading-ring loading-xl text-warning"></span>
 		);
@@ -30,32 +53,42 @@ const TopicDetails = () => {
 
 	return (
 		<>
-			<div className="hero bg-secondary min-h-1/2">
+			<div className="hero bg-secondary">
 				<div className="hero-content text-center">
 					<div className="max-w-md">
-						<h1 className="text-5xl text-secondary-content font-bold">
+						<h1 className="text-2xl text-secondary-content font-bold">
 							{topic.title}
 						</h1>
-						<p className="py-6 text-secondary-content">{topic.description}</p>
-						<Link
-							to={`/topics/${topicId}/lists/new`}
-							className="btn btn-primary">
-							Add Your Top 5
-						</Link>
+						<p className="py-6 w-sm text-left text-secondary-content">
+							{topic.description}
+						</p>
+						{lists.some((item) => item.author.id === user.id) || (
+							<Link
+								to={`/topics/${topicId}/lists/new`}
+								className="btn btn-primary">
+								Add Your Top 5
+							</Link>
+						)}
 						{user.id === topic.owner.id && (
 							<>
 								<Link
 									className="btn btn-warning"
 									to={`/topics/${topic.id}/edit`}>
-									edit
+									edit topic
 								</Link>
 							</>
 						)}
 					</div>
 				</div>
 			</div>
-			<ListsIndex topic={topic} lists={lists} setLists={setLists} />
+			<ListsIndex
+				topic={topic}
+				handleDeleteList={handleDeleteList}
+				lists={lists}
+				setLists={setLists}
+			/>
 		</>
 	);
 };
+
 export default TopicDetails;

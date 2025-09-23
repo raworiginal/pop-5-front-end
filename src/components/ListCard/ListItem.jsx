@@ -1,8 +1,15 @@
-import { FaArrowCircleDown, FaArrowCircleUp } from "react-icons/fa";
-const ListItem = ({ item }) => {
+import { FaArrowDown, FaArrowUp, FaTrash } from "react-icons/fa";
+const ListItem = ({
+	item,
+	index,
+	moveItemRankDown,
+	moveItemRankUp,
+	isForm,
+	removeItemFromList,
+}) => {
 	return (
-		<li className="list-row">
-			<div className="text-4xl tabular-nums">{item.rank}</div>
+		<li className="list-row border-b-2 p-1">
+			<div className="text-4xl tabular-nums">{index + 1}</div>
 			<div>
 				<img
 					className="max-w-10 aspect-auto rounded-box"
@@ -12,29 +19,32 @@ const ListItem = ({ item }) => {
 			<div className="list-col-grow">
 				<div>{item.title}</div>
 				<div>{item.release_date.slice(0, 4)}</div>
-				<div className="text-xs uppercase font-semibold opacity-60">
-					notes: {item.notes}
+			</div>
+			{isForm && (
+				<div>
+					{index !== 0 && (
+						<button
+							onClick={() => {
+								moveItemRankUp(index);
+							}}
+							className="btn btn-xs  btn-primary">
+							<FaArrowUp />
+						</button>
+					)}
+					{index !== 4 && (
+						<button
+							onClick={() => moveItemRankDown(index)}
+							className="btn btn-xs  btn-success">
+							<FaArrowDown />
+						</button>
+					)}
+					<button
+						onClick={() => removeItemFromList(index)}
+						className="btn btn-xs btn-neutral">
+						<FaTrash />
+					</button>
 				</div>
-			</div>
-			<div>
-				<button
-					onClick={() => {
-						moveItemRankUp(index);
-					}}
-					className="btn btn-circle btn-primary text-xl">
-					<FaArrowCircleUp />
-				</button>
-				<button
-					onClick={() => moveItemRankDown(index)}
-					className="btn btn-circle btn-primary text-xl">
-					<FaArrowCircleDown />
-				</button>
-				<button
-					onClick={() => removeResultFromForm(index)}
-					className="btn btn-primary btn-circle">
-					x
-				</button>
-			</div>
+			)}
 		</li>
 	);
 };

@@ -22,39 +22,48 @@ const Dashboard = () => {
 	return (
 		<>
 			<main>
-				<h1>Welcome, {user.username}</h1>
-				<p>
-					This is the dashboard page where you can see a list of all the topics.
-				</p>
-				<Link className="btn" to={"/topics/new"}>
-					Add a Topic
-				</Link>
-				<ul className="list bg-base-200">
-					<li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
-						Most Recent Topics
-					</li>
-					{topics.map((topic, index) => (
-						<li key={topic.id} className="list-row">
-							<div>
-								<img
-									className="size-10 rounded-box"
-									src={`https://i.pravatar.cc/150?img=${index}`}
-								/>
-							</div>
-							<div className="chat-bubble">
-								<Link
-									className="link link-neutral"
-									to={`/topics/${topic.id}`}
-									key={topic.id}>
-									{topic.title}
-								</Link>
-								<div className="text-xs uppercase font-semibold opacity-60">
-									{topic.owner.username}
-								</div>
-							</div>
+				<div className="hero glass bg-secondary">
+					<div className="hero-content text-center">
+						<div className="max-w-md p-2 bg-primary glass rounded-box">
+							<h1 className="text-9xl font-bold text-primary-content rampart">
+								POP 5!
+							</h1>
+							<p className="py-6"></p>
+							<Link className="btn" to={"/topics/new"}>
+								Add a Topic
+							</Link>
+						</div>
+					</div>
+				</div>
+				<div className="flex justify-center">
+					<ul className="list">
+						<li className="p-4 pb-2 rampart font-bold text-4xl text-shadow-lg text-center">
+							Most Recent Topics
 						</li>
-					))}
-				</ul>
+						<div className="glass rounded-box">
+							{topics.map((topic) => (
+								<li key={topic.id} className="list-row border-b-4">
+									<div>
+										<img
+											className="size-10 rounded-box"
+											src={`https://robohash.org/${topic.owner.username}?set=${
+												(topic.owner.id % 4) + 1
+											}`}
+										/>
+									</div>
+									<Link to={`/topics/${topic.id}`} key={topic.id}>
+										<div className="chat-bubble">
+											<p>{topic.title}</p>
+											<div className="text-xs uppercase font-semibold opacity-60">
+												{topic.owner.username}
+											</div>
+										</div>
+									</Link>
+								</li>
+							))}
+						</div>
+					</ul>
+				</div>
 			</main>
 		</>
 	);

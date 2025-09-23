@@ -3,20 +3,7 @@ import * as listService from "../../services/listService";
 import { useParams } from "react-router";
 import ListCard from "../ListCard/ListCard";
 
-const ListsIndex = ({ topic, lists, setLists }) => {
-	const { topicId } = useParams();
-	useEffect(() => {
-		const fetchLists = async () => {
-			try {
-				const fetchedLists = await listService.index(topicId);
-				setLists(fetchedLists);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		fetchLists();
-	}, [topicId]);
-
+const ListsIndex = ({ handleDeleteList, topic, lists, setLists }) => {
 	if (!lists) {
 		return (
 			<span className="loading loading-ring loading-xl text-warning"></span>
@@ -33,6 +20,7 @@ const ListsIndex = ({ topic, lists, setLists }) => {
 						key={list.id}
 						topic={topic}
 						list={list}
+						handleDeleteList={handleDeleteList}
 					/>
 				))}
 			</ul>
