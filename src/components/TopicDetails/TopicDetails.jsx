@@ -10,7 +10,7 @@ const TopicDetails = () => {
 	const { topicId } = useParams();
 	const [topic, setTopic] = useState(null);
 	const { user } = useContext(UserContext);
-	const [lists, setLists] = useState(null);
+	const [lists, setLists] = useState([]);
 
 	useEffect(() => {
 		const fetchTopic = async () => {
@@ -46,7 +46,7 @@ const TopicDetails = () => {
 		}
 	};
 
-	if (!topic || !lists) {
+	if (!topic) {
 		return (
 			<div className="flex justify-center">
 				<Loading />
