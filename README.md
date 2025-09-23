@@ -15,6 +15,8 @@ Pop 5 is a social ranking app, where users create topics and add their Top 5 lis
 ## Attribution
 
 - Profile pics from [Robohash](https://robohash.org/)
+- UI components from DaisyUI
+- Movie API is TMDB
 
 ## Technologies
 
