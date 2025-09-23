@@ -8,7 +8,9 @@ const Landing = () => {
 						<h1 className="text-9xl font-bold text-primary-content rampart">
 							POP 5!
 						</h1>
-						<p className="py-6">Share Your Top 5s!</p>
+						<p className="py-6 text-5xl font-bold text-primary-content">
+							Share Your Top 5s!
+						</p>
 						<Link className="btn" to={"/sign-in"}>
 							Login
 						</Link>
