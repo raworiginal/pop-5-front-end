@@ -3,6 +3,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { useContext } from "react";
 import ListItem from "./ListItem";
 import EmptyBox from "../Placeholders/EmptyBox";
+import Loading from "../Placeholders/Loading";
 
 const ListCard = ({
 	topic,
@@ -12,9 +13,19 @@ const ListCard = ({
 	moveItemRankUp,
 	removeItemFromList,
 	handleDeleteList,
+	listId,
 }) => {
 	const { user } = useContext(UserContext);
 
+	const openConfirmDeleteModal = () => {
+		document.getElementById("delete-confirm").showModal();
+	};
+	if (list.items.length === 0 && listId)
+		return (
+			<div>
+				<Loading />
+			</div>
+		);
 	return (
 		<>
 			<article className="glass card card-border w-sm mx-auto p-4">
@@ -27,11 +38,30 @@ const ListCard = ({
 										Edit
 									</Link>
 									<button
-										onClick={handleDeleteList}
+										onClick={() => openConfirmDeleteModal()}
 										className="btn btn-xs btn-warning">
 										Delete
 									</button>
 								</div>
+								<dialog
+									id="delete-confirm"
+									className="modal modal-bottom sm:modal-middle">
+									<div className="modal-box">
+										<h3 className="font-bold text-lg">Confirm Delete!</h3>
+										<p className="py-4">
+											Are you sure you want to delete this list?
+										</p>
+										<div className="modal-action">
+											{/* if there is a button in form, it will close the modal */}
+											<button className="btn btn-info">Close</button>
+											<button
+												onClick={() => handleDeleteList(list)}
+												className="btn-error btn">
+												Delete
+											</button>
+										</div>
+									</div>
+								</dialog>
 							</section>
 						)}
 					</>

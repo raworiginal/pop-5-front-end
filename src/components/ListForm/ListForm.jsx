@@ -5,6 +5,7 @@ import * as listService from "../../services/listService";
 import { useNavigate, useParams } from "react-router";
 import ListCard from "../ListCard/ListCard";
 import SearchForm from "./SearchForm";
+import Loading from "../Placeholders/Loading";
 import SearchResults from "./SearchResults";
 
 const ListForm = () => {
@@ -24,7 +25,6 @@ const ListForm = () => {
 	useEffect(() => {
 		const fetchTopic = async () => {
 			try {
-				console.log("...fetching topic");
 				const topicData = await topicService.show(topicId);
 				setTopic(topicData);
 			} catch (error) {
@@ -45,6 +45,7 @@ const ListForm = () => {
 		};
 		if (listId) fetchList();
 	}, []);
+
 	const handleChangeSelection = (result) => {
 		setSelectedResult(result);
 	};
@@ -93,7 +94,8 @@ const ListForm = () => {
 		setSelectedResult(null);
 	};
 
-	const clearSearchResuls = () => {
+	const clearSearchResults = () => {
+		console.log("clear");
 		setSearchResults(null);
 	};
 
@@ -144,9 +146,7 @@ const ListForm = () => {
 	};
 
 	if (!topic) {
-		return (
-			<span className="loading loading-ring loading-xl text-warning"></span>
-		);
+		return <Loading />;
 	}
 
 	return (
@@ -193,6 +193,7 @@ const ListForm = () => {
 					moveItemRankDown={moveItemRankDown}
 					moveItemRankUp={moveItemRankUp}
 					removeItemFromList={removeItemFromList}
+					listId={listId}
 				/>
 			</main>
 
@@ -206,6 +207,8 @@ const ListForm = () => {
 						handleChangeSelection={handleChangeSelection}
 						addResultToForm={addResultToForm}
 						closeSearchModal={closeSearchModal}
+						items={formData.items}
+						clearSearchResults={clearSearchResults}
 					/>
 				) : (
 					<SearchForm

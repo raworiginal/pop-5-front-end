@@ -4,6 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { useParams, Link } from "react-router";
 import ListsIndex from "../ListsIndex/ListsIndex";
 import * as listService from "../../services/listService";
+import Loading from "../Placeholders/Loading";
 
 const TopicDetails = () => {
 	const { topicId } = useParams();
@@ -47,7 +48,9 @@ const TopicDetails = () => {
 
 	if (!topic || !lists) {
 		return (
-			<span className="loading loading-ring loading-xl text-warning"></span>
+			<div className="flex justify-center">
+				<Loading />
+			</div>
 		);
 	}
 

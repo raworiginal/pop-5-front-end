@@ -2,8 +2,8 @@ const SearchForm = ({ handleChange, handleSearch, searchData }) => {
 	return (
 		<search className="flex justify-center-safe">
 			<form onSubmit={handleSearch}>
-				<fieldset className="fieldset bg-neutral border-base-300 rounded-box w-sm border p-4">
-					<legend className="fieldset-legend">Movie Search</legend>
+				<fieldset className="bg-primary border-base-300 rounded-box w-sm border p-4">
+					<h2 className="text-2xl text-primary-content">Movie Search</h2>
 
 					<label className="label">SEARCH</label>
 					<input

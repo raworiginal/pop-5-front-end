@@ -1,9 +1,13 @@
+import { FaBackward, FaExclamation } from "react-icons/fa";
+
 const SearchResults = ({
 	searchResults,
 	selectedResult,
 	handleChangeSelection,
 	addResultToForm,
 	closeSearchModal,
+	items,
+	clearSearchResults,
 }) => {
 	const convertDateString = (dateString) => {
 		const convertedDateString = new Date(dateString);
@@ -13,9 +17,16 @@ const SearchResults = ({
 
 	return (
 		<>
-			<div className="modal-box min-w-340px">
+			<div className="modal-box bg-primary border min-w-340px">
+				{selectedResult &&
+					items.some((item) => item.ext_id == selectedResult.id) && (
+						<div role="alert" className="alert alert-warning">
+							<FaExclamation />
+							<span>selection is already in list</span>
+						</div>
+					)}
 				<div className="overflow-x-auto">
-					<table className="table">
+					<table className="table table-xs bg-primary">
 						<thead>
 							<tr>
 								<th></th>
@@ -35,19 +46,19 @@ const SearchResults = ({
 													onClick={() => handleChangeSelection(result)}
 													value={result.title}
 													name="selection"
-													className="radio"
+													className="radio radio-neutral"
 												/>
 											</label>
 										</th>
 										<td>
-											<div className="avatar w-20">
+											<div className="avatar w-10">
 												<img
 													src={result.poster_path}
 													alt={`movie poster for ${result.title}`}
 												/>
 											</div>
 										</td>
-										<td>{result.title}</td>
+										<td className="text-md font-bold">{result.title}</td>
 										<td>{convertDateString(result.release_date)}</td>
 									</tr>
 								))}
@@ -56,6 +67,9 @@ const SearchResults = ({
 				</div>
 
 				<div className="modal-action">
+					<button onClick={clearSearchResults} class="btn">
+						back to search
+					</button>
 					<button onClick={closeSearchModal} className="btn">
 						Close
 					</button>
