@@ -29,6 +29,9 @@ Pop 5 is a social ranking app, where users create topics and add their Top 5 lis
 
 ## Next Steps (WIP)
 
-- Next I want to add more categories (TV, Anime, Music, etc)
-- I want to aggregate Top 5s in a topic to create an overall top 5
-- I want create user profiles where you can see all of the top 5 lists created by a user or yourself
+- Add categories for TV, Music, Anime, and Video Game
+- Redesign the ListCard to be more responsive and mobile first
+- Add user profiles that include all the top 5 lists from that user.
+- Aggregate all lists in a topic to create a community top 5 for each topic/
+- Implement TTL caching between the my backend server and the external api to reduce calls. 
+
